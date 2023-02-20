@@ -1,0 +1,107 @@
+#include<SoftwareSerial.h>
+int A_1A=6,A_1B=11,B_1A=3,B_1B=5;
+int btRxpin=12,btTxpin=13;
+int speed=255;
+SoftwareSerial bluetoothSerial(btRxpin,btTxpin);
+//int line=7,rline=8;
+int trigPin=8;
+int echoPin=9;
+int servoPin=10;
+Servo servo;
+int motorASpeed=150;
+int mootorBSpeed=150;
+
+
+void setup()
+{
+  bluetoothSerial.begin(9600);
+
+  pinMode(A_1A,OUTPUT);
+  pinMode(A_1B,OUTPUT);
+  pinMode(B_1A,OUTPUT);
+  pinMode(B_1B,OUTPUT);
+
+  pinMode(trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
+  servo.attach(servoPin);
+  servo.write(90);
+  delay(1000);
+}
+
+void loop()
+{
+  char cmd=bluetoothSerial.read();
+
+  switch(cmd)
+  {
+    case'f':
+    analogWrite(A_1A,0);
+    analogWrite(A_1B,speed);
+    analogWrite(B_1A,0);
+    analogWrite(B_1B,speed);
+    break;
+
+    case'b':
+    analogWrite(A_1A,speed);
+    analogWrite(A_1B,0);
+    analogWrite(B_1A,speed);
+    analogWrite(B_1B,0);
+    break;
+
+    case'r':
+    analogWrite(A_1A,0);
+    analogWrite(A_1B,0);
+    analogWrite(B_1A,speed);
+    analogWrite(B_1B,0);
+    break;
+
+    case'l':
+    analogWrite(A_1A,speed);
+    analogWrite(A_1B,0);
+    analogWrite(B_1A,0);
+    analogWrite(B_1B,0);
+    break;
+
+    case's':
+    analogWrite(A_1A,0);
+    analogWrite(A_1B,0);
+    analogWrite(B_1A,0);
+    analogWrite(B_1B,0);
+    break;
+    
+   int CM=getStableDistanceCM();
+   long leftDistance=0;
+   iong rightDistance=0;
+   
+   if(cm<25){
+   stop();
+   delay(500);
+   servo.wrtie(90);
+   delay(1000);
+   back();
+   delay(300);
+  }
+  else{
+  forward();
+  }
+}
+float getDistanceCM()
+{
+digitalWrite(echoPin,LOW);
+digitalWrite(trigPin,LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin,HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin,LOW);
+
+float distance=pulseln(echoPin,HIGH)
+return distance;
+}
+float getStalbeDistanceCM()
+{
+int CmSum=0;
+for(int i= 0;i<10;i++){
+CmSum +=getDistanceCM();
+}
+return CMSum
+}
